@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import okhttp3.Request
 
 @Source
 abstract class DragonTranslationOrg : Madara() {
@@ -48,4 +49,14 @@ abstract class DragonTranslationOrg : Madara() {
                 date_upload = parseChapterDate(chapterDto.ago)
             }
         }
+        override fun latestUpdatesRequest(page: Int): Request {
+        return GET(
+            if (page == 1) {
+                "$baseUrl/manga/?m_orderby=latest"
+            } else {
+                "$baseUrl/manga/page/$page/?m_orderby=latest"
+            },
+            headers
+        )
+    }
 }
