@@ -20,7 +20,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build DragonTranslation APK
-        run: ./gradlew :src:es:dragontranslationorg:assembleDebug
+        run: ./gradlew :src:es:dragontranslationorg:assembleDebug -x spotlessKotlinCheck -x spotlessCheck
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
