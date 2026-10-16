@@ -1,17 +1,17 @@
 package eu.kanade.tachiyomi.extension.es.dragontranslationorg
 
 import eu.kanade.tachiyomi.multisrc.madara.Madara
+import eu.kanade.tachiyomi.network.GET
 import eu.kanade.tachiyomi.source.model.SChapter
 import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.parseAs
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import okhttp3.Request
-import eu.kanade.tachiyomi.network.GET
 
 @Source
 abstract class DragonTranslationOrg : Madara() {
@@ -38,7 +38,7 @@ abstract class DragonTranslationOrg : Madara() {
 
     override fun getChapterUrl(chapter: SChapter) = "$baseUrl${chapter.url}"
 
-override suspend fun fetchChapters(
+    override suspend fun fetchChapters(
         mangaPath: String,
         id: String,
         mangaPage: Document?,
