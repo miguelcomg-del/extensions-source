@@ -50,9 +50,3 @@ abstract class DragonTranslationOrg : Madara() {
             }
         }
 }
-
-@Serializable
-data class ChapterListDto(val items: List<ChapterDto>)
-
-@Serializable
-data class ChapterDto(val url: String, val name: String, val ago: String)
