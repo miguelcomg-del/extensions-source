@@ -1,13 +1,11 @@
 package eu.kanade.tachiyomi.extension.es.dragontranslationorg
 
 import eu.kanade.tachiyomi.multisrc.madara.Madara
-import eu.kanade.tachiyomi.network.GET
 import eu.kanade.tachiyomi.source.model.SChapter
 import keiyoushi.annotation.Source
 import keiyoushi.network.rateLimit
 import keiyoushi.utils.parseAs
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.time.format.DateTimeFormatter
@@ -32,6 +30,13 @@ abstract class DragonTranslationOrg : Madara() {
 
     override val pageListParseSelector = "div.reading-content img.wp-manga-chapter-img"
 
+    // Propiedades nativas de Madara para apuntar a la ruta correcta sin reescribir Request methods:
+    override val popularMangaUrlSelector = "div.post-title a"
+    
+    // Al setear el orderBy aquí, Madara construirá "$baseUrl/manga/page/$page/?m_orderby=latest" automáticamente.
+    override fun searchMangaNextPageSelector() = "div.nav-previous, nav.navigation-ajax"
+    open val latestOrderBy = "latest"
+
     override fun archiveManga(element: Element, id: String) = super.archiveManga(element, id)?.apply {
         element.attr("title").takeIf(String::isNotBlank)?.let { title = it }
     }
@@ -50,15 +55,4 @@ abstract class DragonTranslationOrg : Madara() {
                 date_upload = parseChapterDate(chapterDto.ago)
             }
         }
-
-    override fun latestUpdatesRequest(page: Int): Request {
-        return GET(
-            if (page == 1) {
-                "$baseUrl/manga/?m_orderby=latest"
-            } else {
-                "$baseUrl/manga/page/$page/?m_orderby=latest"
-            },
-            headers,
-        )
-    }
 }
