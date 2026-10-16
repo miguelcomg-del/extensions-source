@@ -8,7 +8,7 @@ keiyoushi {
     name = "DragonTranslation.org"
     versionCode = 4
     contentWarning = ContentWarning.MIXED
-    libVersion = "1.6"
+    libVersion = "1.7"
     theme = "madara"
 
     source {
