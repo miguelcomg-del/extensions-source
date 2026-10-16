@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlinx.serialization.Serializable
 
 @Source
 abstract class DragonTranslationOrg : Madara() {
@@ -30,13 +31,6 @@ abstract class DragonTranslationOrg : Madara() {
 
     override val pageListParseSelector = "div.reading-content img.wp-manga-chapter-img"
 
-    // Propiedades nativas de Madara para apuntar a la ruta correcta sin reescribir Request methods:
-    override val popularMangaUrlSelector = "div.post-title a"
-    
-    // Al setear el orderBy aquí, Madara construirá "$baseUrl/manga/page/$page/?m_orderby=latest" automáticamente.
-    override fun searchMangaNextPageSelector() = "div.nav-previous, nav.navigation-ajax"
-    open val latestOrderBy = "latest"
-
     override fun archiveManga(element: Element, id: String) = super.archiveManga(element, id)?.apply {
         element.attr("title").takeIf(String::isNotBlank)?.let { title = it }
     }
@@ -56,3 +50,9 @@ abstract class DragonTranslationOrg : Madara() {
             }
         }
 }
+
+@Serializable
+data class ChapterListDto(val items: List<ChapterDto>)
+
+@Serializable
+data class ChapterDto(val url: String, val name: String, val ago: String)
